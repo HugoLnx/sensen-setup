@@ -66,7 +66,7 @@ NuGet Packages
 - Microsoft.CodeAnalysis.CSharp.CodeStyle
 - Microsoft.CodeAnalysis.FxCopAnalyzers
 - Microsoft.Unity.Analyzers
-- Roslynator.Analizers
+- Roslynator.Analyzers
 - Roslynator.Formatting.Analyzers
 - Roslynator.CodeAnalysis.Analyzers
 
