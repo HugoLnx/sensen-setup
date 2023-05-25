@@ -46,7 +46,9 @@ git init
 if [[ -z "${ONLY_GIT}" ]]; then
     git submodule init
     git submodule add https://github.com/HugoLnx/unity-lnx-arch.git Assets/Submodules/unity-lnx-arch
-    git submodule add https://github.com/HugoLnx/sensen-toolkit.git Assets/Submodules/sensen-toolkit
+    git submodule add https://github.com/HugoLnx/unity-sensen-toolkit.git Assets/Submodules/unity-sensen-toolkit
+    git submodule add https://github.com/HugoLnx/unity-sensen-components.git Assets/Submodules/unity-sensen-components
+    git submodule add https://github.com/HugoLnx/unity-sensen-state-machine.git Assets/Submodules/unity-sensen-state-machine
     git submodule update --recursive --remote
     echo "Full setup finished."
 else
