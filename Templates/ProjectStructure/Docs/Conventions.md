@@ -27,7 +27,7 @@ weapons_flameThrower.png
 ## Decrease Code Density
 ### Spaces after `;`, `,` and flow control keywords
 ```C#
-for (var i = 0; i < 100; i++)
+for (int i = 0; i < 100; i++)
 {
     // ...
 }
@@ -64,19 +64,30 @@ namespace SensenToolkit.Math.TwoDimensions
 {
     public class Line2D
     {
-        public const int TheTruth = 42;
-        private const int TheTruth2 = 42;
-        public static readonly string TheTruthString = "42";
-        private static readonly string TheTruthString2 = "42";
-        public bool IsTheTruth => TheTruth == TheTruth;
+        #region Nested
         public enum Fruit
         {
             Apple,
             Orange,
             Guava,
         }
+        #endregion
+
+        #region Static
+        public const int TheTruth = 42;
+        private const int TheTruth2 = 42;
+        public static readonly string TheTruthString = "42";
+        private static readonly string TheTruthString2 = "42";
+        #endregion
+
+        #region Properties
+        public bool IsTheTruth => TheTruth == TheTruth;
+        #endregion
+
+        #region Delegates
         public delegate void TriggeredHandler();
         public event TriggeredHandler OnTriggered;
+        #endregion
     }
 }
 ```
@@ -135,15 +146,26 @@ foreach (Line line in lines)
 
 ## Class Organization
 The classe must be organized into the following regions:
-1. Nested : Nested classes, enums, structs and delegates
-2. Constants : Constants and static readonly fields
-3. Properties : Fields and properties
-4. Events : Events
-5. Constructors : Constructors, Awake, Start, factory methods and similar.
-6. Static : Public static methods
-7. Methods : Public instance methods
-8. Lifecycle : Lifecycle methods (Update, OnEnable, etc)
-9. Coroutines : Coroutine methods (that returns IEnumerator)
-10. Private : Private static and instance methods
+1. Nested : Nested classes, enums and structs
+2. Static : Constants and static fields and properties
+    - Constants and static readonly fields first
+    - Properties at the end
+3. Fields : Instance fields
+    - Serialized fields first
+4. Properties : Instance properties
+    - Public above private
+5. Delegates : Events and delegates
+    - If the event declaration uses a delegates, declare it above the event
+    - Other delegates below all events
+6. Init : Constructors, Awake, Start, factory methods and similar.
+7. Exposed : What the class are exposing to others
+    - Static methods above instance
+    - Public above protected methods
+    - Includes virtual/abstract methods
+8. Lifecycle : Lifecycle methods (OnEnable, Update and other unity or non-unity callbacks)
+    - Starting methods first (OnEnable, OnEnter, etc)
+    - Finalizing methods last (OnDisable, OnDestroy, OnExit, etc)
+9. Private : Private static and instance methods
+    - Instance methods first
 
 Don't let empty regions hanging around, delete them.
