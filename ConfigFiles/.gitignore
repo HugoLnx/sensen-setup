@@ -78,17 +78,27 @@ crashlytics-build.properties
 # Never ignore Asset meta data
 !/[Aa]ssets/**/*.meta
 
+# NuGet analyzer packages
 /[Nn]uget/
-/[Aa]ssets/saves*
+/[Pp]ackages/Microsoft.*
+/[Pp]ackages/Roslynator.*
+
+# External packages
 /[Aa]ssets/[Vv]endor/
 /[Aa]ssets/[Pp]lugins/
-/[Aa]ssets/InitTestScene*
-/[Aa]ssets/Unity.VisualScripting.Generated*
 
-/tmp
-/deploy
-/.vscode
-/unity-sensen-setup/
+# Sensen Setup folder
 /sensen-setup/
+/unity-sensen-setup/
+
+# Sensen Steam Deploy folders
+/deploy
 /steam-deploy/content/
 /steam-deploy/tmp-content/
+
+# Temporary files
+/tmp
+/.vscode
+/[Aa]ssets/saves*
+/[Aa]ssets/InitTestScene*
+/[Aa]ssets/Unity.VisualScripting.Generated*
