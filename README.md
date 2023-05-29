@@ -51,7 +51,15 @@ styling review. Some things to know...
         "Models": "Fastlane",
         "UI": "Aurelia",
         "Materials": "Archive",
-        "Scriptables": "Config"
+        "Scriptables": "Mock",
+        "Scripts": "Quasar",
+        "Submodules": "Git",
+        "StateGraphs": "Context",
+        "Inputs": "Download",
+        "Maps": "Base",
+        "Prefabs": "Node",
+        "Scenes": "Storybook",
+        "Timelines": "Update"
     },
     "editor.rulers": [
         80,
