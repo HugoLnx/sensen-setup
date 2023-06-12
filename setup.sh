@@ -2,7 +2,7 @@
 SETUP_ROOT="$(dirname -- "$0")"
 PROJECT_ROOT="$SETUP_ROOT/.."
 BKP_FOLDER="$SETUP_ROOT/bkp/"
-SUBMODULES_FOLDER="$PROJECT_ROOT/Assets/Standard Assets/Submodules"
+SUBMODULES_FOLDER="$PROJECT_ROOT/Assets/Plugins/Submodules"
 
 cd "$PROJECT_ROOT"
 
