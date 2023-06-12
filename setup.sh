@@ -47,10 +47,10 @@ git init
 if [[ -z "${ONLY_GIT}" ]]; then
     mkdir -p "$SUBMODULES_FOLDER"
     git submodule init
-    git submodule add https://github.com/HugoLnx/unity-lnx-arch.git "$SUBMODULES_FOLDER/unity-lnx-arch"
-    git submodule add https://github.com/HugoLnx/unity-sensen-toolkit.git "$SUBMODULES_FOLDER/unity-sensen-toolkit"
-    git submodule add https://github.com/HugoLnx/unity-sensen-components.git "$SUBMODULES_FOLDER/unity-sensen-components"
-    git submodule add https://github.com/HugoLnx/unity-sensen-state-machine.git "$SUBMODULES_FOLDER/unity-sensen-state-machine"
+    git submodule add -f -- https://github.com/HugoLnx/unity-lnx-arch.git "$SUBMODULES_FOLDER/unity-lnx-arch"
+    git submodule add -f -- https://github.com/HugoLnx/unity-sensen-toolkit.git "$SUBMODULES_FOLDER/unity-sensen-toolkit"
+    git submodule add -f -- https://github.com/HugoLnx/unity-sensen-components.git "$SUBMODULES_FOLDER/unity-sensen-components"
+    git submodule add -f -- https://github.com/HugoLnx/unity-sensen-state-machine.git "$SUBMODULES_FOLDER/unity-sensen-state-machine"
     git submodule update --recursive --remote
     echo "Full setup finished."
 else
