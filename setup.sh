@@ -41,6 +41,8 @@ if [[ -z "${ONLY_GIT}" ]]; then
     touch ./PackagesBatch/.gitkeep
     mkdir ./Assets/Vendor/
     touch ./Assets/Vendor/.gitkeep
+    mkdir -p ./Assets/Plugins/_Heavy
+    touch ./Assets/Plugins/_Heavy/.gitkeep
 fi
 
 git init
