@@ -32,6 +32,7 @@ def backup_file_if_exists(filename, filefolder='.'):
 
 def backup_config_files():
     backup_file_if_exists('.gitignore')
+    backup_file_if_exists('.gitattributes')
     backup_file_if_exists('.editorconfig')
     backup_file_if_exists('omnisharp.json')
     backup_file_if_exists('NuGet.config', 'Assets')
@@ -40,6 +41,7 @@ def backup_config_files():
 
 def init_git():
     __replace_config('.gitignore', './')
+    __replace_config('.gitattributes', './')
     subprocess.run(['git', 'init'], cwd=PROJECT_ROOT)
     subprocess.run(['git', 'lfs', 'install'], cwd=PROJECT_ROOT)
 

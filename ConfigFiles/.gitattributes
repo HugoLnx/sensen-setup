@@ -1,0 +1,153 @@
+# Macro for all binary files that should use Git LFS.
+[attr]lfs-file filter=lfs diff=lfs merge=lfs -text
+
+# Macro for Unity YAML-based asset files.
+[attr]unity-yaml text merge=unityyamlmerge diff eol=lf linguist-generated
+
+# Macro for Unity Binaries in LFS
+[attr]unity-lfs lfs-file -unity-yaml
+
+## Code
+*.cs     text diff=csharp
+*.cginc  text
+*.shader text
+
+# Unity Text Assets
+*.mat                       unity-yaml
+*.anim                      unity-yaml
+*.unity                     unity-yaml
+*.prefab                    unity-yaml
+*.physicsMaterial2D         unity-yaml
+*.physicMaterial            unity-yaml
+*.asset                     unity-yaml
+*.meta                      unity-yaml
+*.controller                unity-yaml
+*.overrideController        unity-yaml
+*.playable                  unity-yaml
+*.mask                      unity-yaml
+*.brush                     unity-yaml
+*.flare                     unity-yaml
+*.fontsettings              unity-yaml
+*.guiskin                   unity-yaml
+*.giparams                  unity-yaml
+*.renderTexture             unity-yaml
+*.spriteatlas               unity-yaml
+*.terrainlayer              unity-yaml
+*.mixer                     unity-yaml
+*.shadervariants            unity-yaml
+*.preset                    unity-yaml
+
+## git-lfs ##
+# Unity Binaries
+*.unitypackage              lfs-file
+*.sbsar                     lfs-file
+*.cubemap                   lfs-file
+*.bundle                    lfs-file
+# Note: Unity terrain assets must have "-Terrain" suffix.
+*-[Tt]errain.asset          unity-lfs
+# Note: Unity navmesh assets must have "-NavMesh" suffix.
+*-[Nn]av[Mm]esh.asset       unity-lfs
+*[Ll]ighting[Dd]ata.asset   unity-lfs
+*OcclusionCullingData.asset unity-lfs
+
+# Image
+*.jpg               lfs-file
+*.jpeg              lfs-file
+*.png               lfs-file
+*.gif               lfs-file
+*.psd               lfs-file
+*.ai                lfs-file
+*.apng              lfs-file
+*.atsc              lfs-file
+*.bmp               lfs-file
+*.exr               lfs-file
+*.tiff              lfs-file
+*.tif               lfs-file
+*.iff               lfs-file
+*.pict              lfs-file
+*.dds               lfs-file
+*.xcf               lfs-file
+*.leo               lfs-file
+*.kra               lfs-file
+*.kpp               lfs-file
+*.clip              lfs-file
+*.webm              lfs-file
+*.webp              lfs-file
+*.svg               lfs-file
+*.svgz              lfs-file
+*.afphoto           lfs-file
+*.afdesign          lfs-file
+*.tga               lfs-file
+
+# Audio
+*.mp3               lfs-file
+*.wav               lfs-file
+*.ogg               lfs-file
+*.aiff              lfs-file
+*.aif               lfs-file
+*.mod               lfs-file
+*.it                lfs-file
+*.s3m               lfs-file
+*.xm                lfs-file
+
+# Video
+*.mp4               lfs-file
+*.mov               lfs-file
+*.avi               lfs-file
+*.asf               lfs-file
+*.mpg               lfs-file
+*.mpeg              lfs-file
+*.flv               lfs-file
+*.ogv               lfs-file
+*.wmv               lfs-file
+
+# 3D Object
+*.obj               lfs-file
+*.[Ff][Bb][Xx]      lfs-file
+*.blend             lfs-file
+*.blender           lfs-file
+*.dae               lfs-file
+*.max               lfs-file
+*.mb                lfs-file
+*.ma                lfs-file
+*.3ds               lfs-file
+*.dfx               lfs-file
+*.c4d               lfs-file
+*.lwo               lfs-file
+*.lwo2              lfs-file
+*.abc               lfs-file
+*.3dm               lfs-file
+*.bin               lfs-file
+*.glb               lfs-file
+
+# Executables
+*.exe               lfs-file
+*.dll               lfs-file
+*.so                lfs-file
+*.pdb               lfs-file
+*.mdb               lfs-file
+
+# Packaging
+*.zip               lfs-file
+*.7z                lfs-file
+*.gz                lfs-file
+*.rar               lfs-file
+*.tar               lfs-file
+
+# Documents
+*.pdf lfs-file      lfs-file
+
+
+# Font formats
+*.ttf               lfs-file
+*.otf               lfs-file
+*.eot               lfs-file
+*.woff              lfs-file
+*.woff2             lfs-file
+
+# etc...
+*.a                 lfs-file
+*.exr               lfs-file
+*.rns               lfs-file
+*.reason            lfs-file
+*.lxo               lfs-file
