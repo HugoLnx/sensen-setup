@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-import argparse
 import os
+import glob
+from datetime import datetime
+import argparse
 import shutil
 import subprocess
 from src.manifest import merge_manifests
 from src.nuget import merge_nuget_packages_config, update_omnisharp_json
 from src.utils import write_unix
-from datetime import datetime
 
 SETUP_ROOT = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SETUP_ROOT, '..'))
@@ -69,7 +70,7 @@ def import_configs():
     push_manifest()
     push_nuget()
     __replace_config('.editorconfig', '.')
-    __ensure_folder('PackagesBatch')
+    __copy_all_files('PackagesBatch/*.unitypackage', './PackagesBatch/')
 
 def create_project_structure():
     project_structure_path = os.path.join(PROJECT_ROOT, 'Assets', args.name)
@@ -158,6 +159,17 @@ def __replace_config(config_relative_path, target_relative_path):
     config_path = os.path.join(SETUP_ROOT, 'ConfigFiles', config_relative_path)
     target_path = os.path.join(PROJECT_ROOT, target_relative_path)
     shutil.copy(config_path, target_path)
+
+def __copy_all_files(source_folder, target_folder):
+    source_path = os.path.join(SETUP_ROOT, source_folder)
+    target_path = os.path.abspath(os.path.join(PROJECT_ROOT, target_folder))
+    os.makedirs(target_path, exist_ok=True)
+
+    source_files = glob.glob(source_path)
+    for source_file in source_files:
+        if os.path.isfile(source_file):
+            shutil.copy(source_file, target_path)
+            print(f'Copied {source_file} to {target_path}')
 
 def __ensure_folder(folder_relative_path):
     folder_path = os.path.join(PROJECT_ROOT, folder_relative_path)

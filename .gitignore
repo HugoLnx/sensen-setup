@@ -1,5 +1,6 @@
 /PrivatePackagesBatch/
 *.unitypackage
+!PackagesBatch/*.unitypackage
 *.meta
 /bkp
 *.pyc
