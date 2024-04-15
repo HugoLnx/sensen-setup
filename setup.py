@@ -41,7 +41,7 @@ def backup_config_files():
 
 def init_git():
     __replace_config('.gitignore', './')
-    __replace_config('.gitattributes', './')
+    __replace_config('gitattributes', './.gitattributes')
     subprocess.run(['git', 'init'], cwd=PROJECT_ROOT)
     subprocess.run(['git', 'lfs', 'install'], cwd=PROJECT_ROOT)
 
