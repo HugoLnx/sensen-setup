@@ -16,14 +16,16 @@ MANIFEST_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Packages', 'manifest.json')
 MANIFEST_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'manifest.json')
 
 COMMAND_INIT_GIT = 'init-git'
-COMMAND_IMPORT_ALL = 'import-all'
+COMMAND_SETUP_INIT = 'init'
+COMMAND_SETUP_ALL = 'all'
 COMMAND_INIT_SUBMODULES = 'init-submodules'
 COMMAND_RM_SUBMODULES = 'rm-submodules'
 COMMAND_PULL_MANIFEST = 'pull-manifest'
 COMMAND_PUSH_MANIFEST = 'push-manifest'
 COMMANDS = [
     COMMAND_INIT_GIT,
-    COMMAND_IMPORT_ALL,
+    COMMAND_SETUP_INIT,
+    COMMAND_SETUP_ALL,
     COMMAND_INIT_SUBMODULES,
     COMMAND_RM_SUBMODULES,
     COMMAND_PULL_MANIFEST,
@@ -70,12 +72,13 @@ def create_project_structure():
     __ensure_folder('Assets/Vendor')
     __ensure_folder('Assets/Plugins/_Heavy')
 
-def init_submodules():
+def init_submodules(only_toolkit=False):
     os.makedirs(SUBMODULES_FOLDER, exist_ok=True)
     subprocess.run(['git', 'submodule', 'init'], cwd=PROJECT_ROOT)
-    __add_submodule('dev', 'https://github.com/HugoLnx/unity-lnx-arch.git', 'unity-lnx-arch')
+    if not only_toolkit:
+        __add_submodule('dev', 'https://github.com/HugoLnx/unity-lnx-arch.git', 'unity-lnx-arch')
+        __add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-components.git', 'unity-sensen-components')
     __add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-toolkit.git', 'unity-sensen-toolkit')
-    __add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-components.git', 'unity-sensen-components')
     subprocess.run(['git', 'submodule', 'update', '--recursive', '--remote'], cwd=PROJECT_ROOT)
 
 def cleanup_submodules():
@@ -151,7 +154,12 @@ if __name__ == '__main__':
     if args.command == COMMAND_INIT_GIT:
         backup_config_files()
         init_git()
-    elif args.command == COMMAND_IMPORT_ALL:
+    elif args.command == COMMAND_SETUP_INIT:
+        backup_config_files()
+        init_git()
+        import_configs()
+        init_submodules(only_toolkit=True)
+    elif args.command == COMMAND_SETUP_ALL:
         backup_config_files()
         init_git()
         import_configs()
