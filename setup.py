@@ -69,6 +69,7 @@ def import_configs():
     push_manifest()
     push_nuget()
     __replace_config('.editorconfig', '.')
+    __ensure_folder('PackagesBatch')
 
 def create_project_structure():
     project_structure_path = os.path.join(PROJECT_ROOT, 'Assets', args.name)
@@ -76,7 +77,6 @@ def create_project_structure():
         print(f'!!! Project structure folder already exists: {project_structure_path}')
     else:
         shutil.copytree(os.path.join(SETUP_ROOT, 'Templates/ProjectStructure/'), project_structure_path)
-    __ensure_folder('PackagesBatch')
     __ensure_folder('Assets/Vendor')
     __ensure_folder('Assets/Plugins/_Ignore')
 
