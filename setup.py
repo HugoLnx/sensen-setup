@@ -3,7 +3,9 @@ import argparse
 import os
 import shutil
 import subprocess
-from src.manifest import merge_manifests, write_manifest
+from src.manifest import merge_manifests
+from src.nuget import merge_nuget_packages_config, update_omnisharp_json
+from src.utils import write_unix
 from datetime import datetime
 
 SETUP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -12,8 +14,12 @@ BKP_FOLDER = os.path.join(SETUP_ROOT, 'bkp')
 SUBMODULES_FOLDER = os.path.join(PROJECT_ROOT, 'Assets', 'Plugins', 'Submodules')
 DEFAULT_PROJECT_NAME = os.path.basename(PROJECT_ROOT)
 
+OMNISHARP_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'omnisharp.json')
+
 MANIFEST_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Packages', 'manifest.json')
 MANIFEST_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'manifest.json')
+NUGET_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Assets', 'packages.config')
+NUGET_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'packages.config')
 
 COMMAND_INIT_GIT = 'init-git'
 COMMAND_SETUP_INIT = 'init'
@@ -22,6 +28,8 @@ COMMAND_INIT_SUBMODULES = 'init-submodules'
 COMMAND_RM_SUBMODULES = 'rm-submodules'
 COMMAND_PULL_MANIFEST = 'pull-manifest'
 COMMAND_PUSH_MANIFEST = 'push-manifest'
+COMMAND_PULL_NUGET = 'pull-nuget'
+COMMAND_PUSH_NUGET = 'push-nuget'
 COMMANDS = [
     COMMAND_INIT_GIT,
     COMMAND_SETUP_INIT,
@@ -30,6 +38,8 @@ COMMANDS = [
     COMMAND_RM_SUBMODULES,
     COMMAND_PULL_MANIFEST,
     COMMAND_PUSH_MANIFEST,
+    COMMAND_PULL_NUGET,
+    COMMAND_PUSH_NUGET,
 ]
 
 # BACKUP CONFIG FILES
@@ -57,10 +67,8 @@ def init_git():
 
 def import_configs():
     push_manifest()
+    push_nuget()
     __replace_config('.editorconfig', '.')
-    __replace_config('omnisharp.json', '.')
-    __replace_config('NuGet.config', 'Assets')
-    __replace_config('packages.config', 'Assets')
 
 def create_project_structure():
     project_structure_path = os.path.join(PROJECT_ROOT, 'Assets', args.name)
@@ -93,7 +101,7 @@ def pull_manifest():
     )
 
     if version_updates_snippet is not None:
-        write_manifest(MANIFEST_SETUP_PATH, new_manifest)
+        write_unix(MANIFEST_SETUP_PATH, new_manifest)
         print('Updated setup base manifest...')
         print(version_updates_snippet)
     else:
@@ -113,7 +121,7 @@ def push_manifest():
     has_updates = version_updates_snippet is not None or new_dependencies_snippet is not None
 
     if has_updates:
-        write_manifest(MANIFEST_PROJECT_PATH, new_manifest)
+        write_unix(MANIFEST_PROJECT_PATH, new_manifest)
         print('Updated project manifest...')
         print(version_updates_snippet)
     else:
@@ -122,6 +130,22 @@ def push_manifest():
     if new_dependencies_snippet is not None:
         print('Added new dependencies to project manifest')
         print(new_dependencies_snippet)
+
+def pull_nuget():
+    (new_content, packages) = merge_nuget_packages_config(
+        source_path=NUGET_PROJECT_PATH,
+        target_path=NUGET_SETUP_PATH,
+    )
+
+    write_unix(NUGET_SETUP_PATH, new_content)
+
+    new_json_content = update_omnisharp_json(OMNISHARP_SETUP_PATH, packages)
+    write_unix(OMNISHARP_SETUP_PATH, new_json_content)
+
+def push_nuget():
+    __replace_config('omnisharp.json', '.')
+    __replace_config('NuGet.config', 'Assets')
+    __replace_config('packages.config', 'Assets')
 
 
 def __add_submodule(branch_name, git_url, folder_name):
@@ -174,3 +198,7 @@ if __name__ == '__main__':
         pull_manifest()
     elif args.command == COMMAND_PUSH_MANIFEST:
         push_manifest()
+    elif args.command == COMMAND_PULL_NUGET:
+        pull_nuget()
+    elif args.command == COMMAND_PUSH_NUGET:
+        push_nuget()
