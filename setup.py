@@ -3,6 +3,7 @@ import argparse
 import os
 import shutil
 import subprocess
+from src.manifest import merge_manifests, write_manifest
 from datetime import datetime
 
 SETUP_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -11,15 +12,22 @@ BKP_FOLDER = os.path.join(SETUP_ROOT, 'bkp')
 SUBMODULES_FOLDER = os.path.join(PROJECT_ROOT, 'Assets', 'Plugins', 'Submodules')
 DEFAULT_PROJECT_NAME = os.path.basename(PROJECT_ROOT)
 
+MANIFEST_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Packages', 'manifest.json')
+MANIFEST_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'manifest.json')
+
 COMMAND_INIT_GIT = 'init-git'
 COMMAND_IMPORT_ALL = 'import-all'
 COMMAND_INIT_SUBMODULES = 'init-submodules'
 COMMAND_RM_SUBMODULES = 'rm-submodules'
+COMMAND_PULL_MANIFEST = 'pull-manifest'
+COMMAND_PUSH_MANIFEST = 'push-manifest'
 COMMANDS = [
     COMMAND_INIT_GIT,
     COMMAND_IMPORT_ALL,
     COMMAND_INIT_SUBMODULES,
     COMMAND_RM_SUBMODULES,
+    COMMAND_PULL_MANIFEST,
+    COMMAND_PUSH_MANIFEST,
 ]
 
 # BACKUP CONFIG FILES
@@ -45,12 +53,14 @@ def init_git():
     subprocess.run(['git', 'init'], cwd=PROJECT_ROOT)
     subprocess.run(['git', 'lfs', 'install'], cwd=PROJECT_ROOT)
 
-def import_all():
+def import_configs():
+    push_manifest()
     __replace_config('.editorconfig', '.')
     __replace_config('omnisharp.json', '.')
     __replace_config('NuGet.config', 'Assets')
     __replace_config('packages.config', 'Assets')
-    __replace_config('manifest.json', 'Packages')
+
+def create_project_structure():
     project_structure_path = os.path.join(PROJECT_ROOT, 'Assets', args.name)
     if os.path.exists(project_structure_path):
         print(f'!!! Project structure folder already exists: {project_structure_path}')
@@ -72,10 +82,49 @@ def cleanup_submodules():
     subprocess.run(['git', 'submodule', 'deinit', '-f', '.'], cwd=PROJECT_ROOT)
     shutil.rmtree(SUBMODULES_FOLDER, ignore_errors=True)
 
+def pull_manifest():
+    (new_manifest, new_dependencies_snippet, version_updates_snippet) = merge_manifests(
+        source_path=MANIFEST_PROJECT_PATH,
+        target_path=MANIFEST_SETUP_PATH,
+        add_new_dependencies=False
+    )
+
+    if version_updates_snippet is not None:
+        write_manifest(MANIFEST_SETUP_PATH, new_manifest)
+        print('Updated setup base manifest...')
+        print(version_updates_snippet)
+    else:
+        print('Setup manifest has no versions to update')
+
+    if new_dependencies_snippet is not None:
+        print('Project manifest has dependencies that are not in source manifest...')
+        print(new_dependencies_snippet)
+        print('Consider adding them manually to the setup manifest')
+
+def push_manifest():
+    (new_manifest, new_dependencies_snippet, version_updates_snippet) = merge_manifests(
+        source_path=MANIFEST_SETUP_PATH,
+        target_path=MANIFEST_PROJECT_PATH,
+        add_new_dependencies=True
+    )
+    has_updates = version_updates_snippet is not None or new_dependencies_snippet is not None
+
+    if has_updates:
+        write_manifest(MANIFEST_PROJECT_PATH, new_manifest)
+        print('Updated project manifest...')
+        print(version_updates_snippet)
+    else:
+        print('Project manifest is already up-to-date')
+
+    if new_dependencies_snippet is not None:
+        print('Added new dependencies to project manifest')
+        print(new_dependencies_snippet)
+
+
 def __add_submodule(branch_name, git_url, folder_name):
     folder_path = os.path.join(SUBMODULES_FOLDER, folder_name)
     folder_relpath = os.path.relpath(folder_path, PROJECT_ROOT)
-    cmd = ['git', 'submodule', 'add', '-b', branch_name, '--', git_url, folder_relpath]
+    cmd = ['git', 'submodule', 'add', '-f', '-b', branch_name, '--', git_url, folder_relpath]
     subprocess.run(cmd, cwd=PROJECT_ROOT)
 
 def __replace_config(config_relative_path, target_relative_path):
@@ -94,18 +143,26 @@ if __name__ == '__main__':
     parser.add_argument('--name', default=DEFAULT_PROJECT_NAME, help='Name of the game', type=str, required=False)
     args = parser.parse_args()
 
-    if args.command in COMMANDS:
-        backup_config_files()
+    if args.command not in COMMANDS:
+        print(f'Invalid command: {args.command}')
+        print(f'Valid commands: {COMMANDS}')
+        exit(1)
 
     if args.command == COMMAND_INIT_GIT:
+        backup_config_files()
         init_git()
+    elif args.command == COMMAND_IMPORT_ALL:
+        backup_config_files()
+        init_git()
+        import_configs()
+        create_project_structure()
+        init_submodules()
     elif args.command == COMMAND_INIT_SUBMODULES:
         init_git()
         init_submodules()
-
     elif args.command == COMMAND_RM_SUBMODULES:
         cleanup_submodules()
-    elif args.command == COMMAND_IMPORT_ALL:
-        init_git()
-        import_all()
-        init_submodules()
+    elif args.command == COMMAND_PULL_MANIFEST:
+        pull_manifest()
+    elif args.command == COMMAND_PUSH_MANIFEST:
+        push_manifest()
