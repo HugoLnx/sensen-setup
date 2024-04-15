@@ -77,6 +77,7 @@ crashlytics-build.properties
 ############################
 # Never ignore Asset meta data
 # !/[Aa]ssets/**/*.meta
+_[Ii]gnore/
 
 # Dependencies
 *.aar
@@ -94,7 +95,6 @@ crashlytics-build.properties
 
 # External packages
 /[Aa]ssets/[Vv]endor/
-/[Aa]ssets/[Pp]lugins/_[Hh]eavy/
 /[Aa]ssets/[Gg]oogleMobileAds/[Ee]ditor/[Rr]esources/
 
 # Sensen Setup folder

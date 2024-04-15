@@ -78,7 +78,7 @@ def create_project_structure():
         shutil.copytree(os.path.join(SETUP_ROOT, 'Templates/ProjectStructure/'), project_structure_path)
     __ensure_folder('PackagesBatch')
     __ensure_folder('Assets/Vendor')
-    __ensure_folder('Assets/Plugins/_Heavy')
+    __ensure_folder('Assets/Plugins/_Ignore')
 
 def init_submodules(only_toolkit=False):
     os.makedirs(SUBMODULES_FOLDER, exist_ok=True)
