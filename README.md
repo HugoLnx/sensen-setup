@@ -39,13 +39,13 @@ $ git commit -m "First commit: Through unity-sensen-setup init-git"
 
 4. Execute the initial setup
 ```bash
-$ python ./unity-sensen-setup/setup.py init --2d --mobile --minimal
+$ python ./unity-sensen-setup/setup.py init --2d --mobile --slim
 # This will:
 # - Import all configurations
 # - Initialize unity-sensen-toolkit submodule
 # - Create the ./PackagesBatch/ folder with DOTWeen inside
 # Valid Options:
-# --2d | --3d | --mobile | --desktop | --minimal
+# --2d | --3d | --mobile | --desktop | --slim
 # See more on manifest filtering section
 ```
 
@@ -128,20 +128,20 @@ dependencies._
 
 ## VS Code extra config
 ### Suggested Extensions
-- C# (powered by OmniSharp)
+- C# by Microsoft
+- C# Dev Kit by Microsoft
+- Unity by Microsoft
 - GitLens
 - Material Icon Theme
 - Unity Toolbox
 - Unity Tools
-- Gitlab Copilot
+- Github Copilot
 
 ### Some keys on my `settings.json`
 ```JSON
     "unityToolbox.privateAccessModifier": true,
-    "unity-tools.documentationVersion": "2021.3",
+    "unity-tools.documentationVersion": "2022.3",
     "unity-tools.localDocumentationViewer": "chrome",
-    "omnisharp.enableRoslynAnalyzers": true,
-    "omnisharp.analyzeOpenDocumentsOnly": true,
     "material-icon-theme.folders.associations": {
         "Art": "Theme",
         "Textures": "Images",
