@@ -55,7 +55,7 @@ $ python ./unity-sensen-setup/setup.py configs --2d --mobile --slim
 9. Add the unity packages you want into `./PackagesBatch/` folder.
 10. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`. (You can also import manually if you want)
 11. Execute the full setup
-12. (Optional) Open `Unity's Preferences` > Set Visual Studio Code as the External editor, and click in `Regenerate project files`. (Reference: [https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc](Docs Visual Studio Package))
+12. (Optional) Open `Unity's Preferences` > Set Visual Studio Code as the External editor, and click in `Regenerate project files`. (Reference: [Docs Visual Studio Package](https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc))
 ```bash
 $ python ./unity-sensen-setup/setup.py structure
 # This will:
@@ -93,7 +93,7 @@ $ python ./unity-sensen-setup/setup.py push-manifest
 ### .gitattributes
 Git attribute is configured to put large file like videos, audio, and 3d models into git LFS. Also
 it configures Unity YAML merging on the relevant file types through Unity's official merging tool.
-For the merging to work you will need to configure the tool, see more on [https://docs.unity3d.com/Manual/SmartMerge.html](Unity's documentation over Smart Merge).
+For the merging to work you will need to configure the tool, see more on [Unity's documentation over Smart Merge](https://docs.unity3d.com/Manual/SmartMerge.html).
 
 ### Batch *.unitypackage importing
 1. Copy the desired `*.unitypackages` to `./PackagesBatch`
