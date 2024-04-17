@@ -26,6 +26,7 @@ class SetupExecutor:
         self.manifest_filters = manifest_filters
 
     def backup_config_files(self):
+        os.makedirs(BKP_FOLDER, exist_ok=True)
         self.__backup_file_if_exists('.gitignore')
         self.__backup_file_if_exists('.gitattributes')
         self.__backup_file_if_exists('.editorconfig')
