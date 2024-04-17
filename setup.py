@@ -5,7 +5,7 @@ from datetime import datetime
 import argparse
 import shutil
 import subprocess
-from src.manifest import merge_manifests
+from src.manifest import merge_manifests, is_2d_manifest, is_mobile_manifest
 from src.nuget import merge_nuget_packages_config, update_omnisharp_json
 from src.utils import write_unix
 
@@ -67,7 +67,6 @@ def init_git():
     subprocess.run(['git', 'lfs', 'install'], cwd=PROJECT_ROOT)
 
 def import_configs():
-    push_manifest()
     push_nuget()
     __replace_config('.editorconfig', '.')
     __copy_all_files('PackagesBatch/*.unitypackage', './PackagesBatch/')
@@ -95,11 +94,14 @@ def cleanup_submodules():
     shutil.rmtree(SUBMODULES_FOLDER, ignore_errors=True)
 
 def pull_manifest():
-    (new_manifest, new_dependencies_snippet, version_updates_snippet) = merge_manifests(
+    result = merge_manifests(
         source_path=MANIFEST_PROJECT_PATH,
         target_path=MANIFEST_SETUP_PATH,
         add_new_dependencies=False
     )
+    new_manifest = result['new_manifest']
+    new_dependencies_snippet = result['new_dependencies_snippet']
+    version_updates_snippet = result['version_updates_snippet']
 
     if version_updates_snippet is not None:
         write_unix(MANIFEST_SETUP_PATH, new_manifest)
@@ -109,28 +111,40 @@ def pull_manifest():
         print('Setup manifest has no versions to update')
 
     if new_dependencies_snippet is not None:
-        print('Project manifest has dependencies that are not in source manifest...')
+        print('> Project manifest has dependencies that are not in source manifest...')
         print(new_dependencies_snippet)
         print('Consider adding them manually to the setup manifest')
 
-def push_manifest():
-    (new_manifest, new_dependencies_snippet, version_updates_snippet) = merge_manifests(
+def push_manifest(manifest_filters):
+    result = merge_manifests(
         source_path=MANIFEST_SETUP_PATH,
         target_path=MANIFEST_PROJECT_PATH,
-        add_new_dependencies=True
+        add_new_dependencies=True,
+        filters=manifest_filters
     )
-    has_updates = version_updates_snippet is not None or new_dependencies_snippet is not None
+    new_manifest = result['new_manifest']
+    new_dependencies_snippet = result['new_dependencies_snippet']
+    version_updates_snippet = result['version_updates_snippet']
+    removed_dependencies = result['removed_dependencies']
+
+    has_updates = version_updates_snippet is not None \
+        or new_dependencies_snippet is not None \
+        or len(removed_dependencies) > 0
 
     if has_updates:
         write_unix(MANIFEST_PROJECT_PATH, new_manifest)
-        print('Updated project manifest...')
+        print('> Updated project manifest...')
         print(version_updates_snippet)
     else:
         print('Project manifest is already up-to-date')
 
     if new_dependencies_snippet is not None:
-        print('Added new dependencies to project manifest')
+        print('> Added new dependencies to project manifest')
         print(new_dependencies_snippet)
+
+    if len(removed_dependencies) > 0:
+        print('> Removed dependencies from project manifest')
+        print('\n'.join(removed_dependencies))
 
 def pull_nuget():
     (new_content, packages) = merge_nuget_packages_config(
@@ -180,7 +194,37 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('command', choices=COMMANDS, default=COMMANDS[0], help='Command to run', type=str)
     parser.add_argument('--name', default=DEFAULT_PROJECT_NAME, help='Name of the game', type=str, required=False)
+    parser.add_argument('--2d', dest='two_d', default=False, help='Force to use 2D dependencies', type=bool, required=False)
+    parser.add_argument('--3d', dest='three_d', default=False, help='Force to use 3D dependencies', type=bool, required=False)
+    parser.add_argument('--mobile', default=False, help='Use mobile dependencies', type=bool, required=False)
+    parser.add_argument('--desktop', default=False, help='Use desktop dependencies', type=bool, required=False)
+    parser.add_argument('--minimal', default=False, help='Remove some optional dependencies', type=bool, required=False)
     args = parser.parse_args()
+
+    if args.two_d and args.three_d:
+        print('Cannot use 2D and 3D at the same time')
+        exit(1)
+
+    if args.mobile and args.desktop:
+        print('Cannot use mobile and desktop at the same time')
+        print('PS.: If you are making a cross-platform game, just use --mobile to add the mobile dependencies')
+        exit(1)
+
+
+    is_2d = args.two_d or (not(args.three_d) and is_2d_manifest(MANIFEST_PROJECT_PATH))
+    is_3d = not is_2d
+    is_mobile = args.mobile or (not(args.desktop) and is_mobile_manifest(MANIFEST_PROJECT_PATH))
+    is_minimal = args.minimal
+
+    was_auto_detected = not(args.two_d) and not(args.three_d)
+    print(f'Using {'2D' if is_2d else '3D'}{' mobile' if is_mobile else ''}{' minimal' if is_minimal else ''} dependencies {'(Auto-detected)' if was_auto_detected else ''}')
+
+    manifest_filters = {
+        '2d': is_2d,
+        '3d': is_3d,
+        'mobile': is_mobile,
+        'minimal': is_minimal,
+    }
 
     if args.command not in COMMANDS:
         print(f'Invalid command: {args.command}')
@@ -193,11 +237,13 @@ if __name__ == '__main__':
     elif args.command == COMMAND_SETUP_INIT:
         backup_config_files()
         init_git()
+        push_manifest(manifest_filters)
         import_configs()
         init_submodules(only_toolkit=True)
     elif args.command == COMMAND_SETUP_ALL:
         backup_config_files()
         init_git()
+        push_manifest(manifest_filters)
         import_configs()
         create_project_structure()
         init_submodules()
@@ -209,7 +255,7 @@ if __name__ == '__main__':
     elif args.command == COMMAND_PULL_MANIFEST:
         pull_manifest()
     elif args.command == COMMAND_PUSH_MANIFEST:
-        push_manifest()
+        push_manifest(manifest_filters)
     elif args.command == COMMAND_PULL_NUGET:
         pull_nuget()
     elif args.command == COMMAND_PUSH_NUGET:
