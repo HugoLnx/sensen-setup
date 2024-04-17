@@ -117,8 +117,8 @@ dependencies._
 ### Suggested Extensions
 - C# Dev Kit by Microsoft
     - C# by Microsoft
-    - Unity by Microsoft
     - IntelliCode for C# Dev Kit
+- Unity by Microsoft
 - Editor Config
 - GitLens
 - Material Icon Theme
