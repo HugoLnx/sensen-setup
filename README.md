@@ -22,7 +22,7 @@ $ git clone git@github.com:HugoLnx/unity-sensen-setup.git
 
 2. Use the command that will initialize git
 ```bash
-$ python ./unity-sensen-setup/setup.py init-git
+$ python ./unity-sensen-setup/setup.py git
 # This will:
 # - Init git
 # - Install LFS
@@ -33,12 +33,12 @@ $ python ./unity-sensen-setup/setup.py init-git
 3. Commit the whole project
 ```bash
 $ git add .
-$ git commit -m "First commit: Through unity-sensen-setup init-git"
+$ git commit -m "First commit: Through unity-sensen-setup git"
 ```
 
 4. Execute the initial setup
 ```bash
-$ python ./unity-sensen-setup/setup.py init --2d --mobile --slim
+$ python ./unity-sensen-setup/setup.py configs --2d --mobile --slim
 # This will:
 # - Import all configurations
 # - Initialize unity-sensen-toolkit submodule
@@ -57,11 +57,14 @@ $ python ./unity-sensen-setup/setup.py init --2d --mobile --slim
 11. Execute the full setup
 12. (Optional) Open `Unity's Preferences` > Set Visual Studio Code as the External editor, and click in `Regenerate project files`. (Reference: [https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc](Docs Visual Studio Package))
 ```bash
-$ python ./unity-sensen-setup/setup.py all
+$ python ./unity-sensen-setup/setup.py structure
 # This will:
-# - Create project structure
-# - Initialize unity-sensen-components submodule
-# - Initialize unity-lnx-arch submodule
+# - Create project structure on Assets/{Project's folder name}
+# - Initialize all pre-defined submodules
+# Notes:
+# By default, it creates the structure using the same name of the Project's folder, but
+# you can specify a custom name using `--name "MyGame"`, this will create the structure
+# at `Assets/MyGame`.
 ```
 11. Refresh Assets on Unity (Press "CTRL + R")
 12. Commit the setup final state

@@ -3,19 +3,15 @@ import argparse
 from src.SetupExecutor import SetupExecutor, MANIFEST_PROJECT_PATH
 from src.manifest import is_2d_manifest, is_mobile_manifest
 
-COMMAND_INIT_GIT = 'init-git'
-COMMAND_SETUP_INIT = 'init'
-COMMAND_SETUP_ALL = 'all'
-COMMAND_INIT_SUBMODULES = 'init-submodules'
-COMMAND_RM_SUBMODULES = 'rm-submodules'
+COMMAND_INIT_GIT = 'git'
+COMMAND_INIT_CONFIGS = 'configs'
+COMMAND_INIT_STRUCTURE = 'structure'
 COMMAND_PULL_MANIFEST = 'pull-manifest'
 COMMAND_PUSH_MANIFEST = 'push-manifest'
 COMMANDS = [
     COMMAND_INIT_GIT,
-    COMMAND_SETUP_INIT,
-    COMMAND_SETUP_ALL,
-    COMMAND_INIT_SUBMODULES,
-    COMMAND_RM_SUBMODULES,
+    COMMAND_INIT_CONFIGS,
+    COMMAND_INIT_STRUCTURE,
     COMMAND_PULL_MANIFEST,
     COMMAND_PUSH_MANIFEST,
 ]
@@ -71,24 +67,14 @@ e = SetupExecutor(
 if args.command == COMMAND_INIT_GIT:
     e.backup_config_files()
     e.init_git()
-elif args.command == COMMAND_SETUP_INIT:
+elif args.command == COMMAND_INIT_CONFIGS:
     e.backup_config_files()
-    e.init_git()
     e.push_manifest()
     e.import_configs()
     e.init_submodules(only_toolkit=True)
-elif args.command == COMMAND_SETUP_ALL:
-    e.backup_config_files()
-    e.init_git()
-    e.push_manifest()
-    e.import_configs()
+elif args.command == COMMAND_INIT_STRUCTURE:
     e.create_project_structure()
     e.init_submodules()
-elif args.command == COMMAND_INIT_SUBMODULES:
-    e.init_git()
-    e.init_submodules()
-elif args.command == COMMAND_RM_SUBMODULES:
-    e.cleanup_submodules()
 elif args.command == COMMAND_PULL_MANIFEST:
     e.pull_manifest()
 elif args.command == COMMAND_PUSH_MANIFEST:
