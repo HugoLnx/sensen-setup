@@ -4,7 +4,6 @@ from datetime import datetime
 import shutil
 import subprocess
 from src.manifest import merge_manifests
-from src.nuget import merge_nuget_packages_config, update_omnisharp_json
 from src.utils import write_unix
 
 SETUP_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
@@ -17,8 +16,6 @@ OMNISHARP_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'omnisharp.json')
 
 MANIFEST_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Packages', 'manifest.json')
 MANIFEST_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'manifest.json')
-NUGET_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Assets', 'packages.config')
-NUGET_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'packages.config')
 
 class SetupExecutor:
     def __init__(self, project_name, manifest_filters):
@@ -30,9 +27,6 @@ class SetupExecutor:
         self.__backup_file_if_exists('.gitignore')
         self.__backup_file_if_exists('.gitattributes')
         self.__backup_file_if_exists('.editorconfig')
-        self.__backup_file_if_exists('omnisharp.json')
-        self.__backup_file_if_exists('NuGet.config', 'Assets')
-        self.__backup_file_if_exists('packages.config', 'Assets')
         self.__backup_file_if_exists('manifest.json', 'Packages')
 
     def init_git(self):
@@ -42,7 +36,6 @@ class SetupExecutor:
         subprocess.run(['git', 'lfs', 'install'], cwd=PROJECT_ROOT)
 
     def import_configs(self):
-        self.push_nuget()
         self.__replace_config('.editorconfig', '.')
         self.__copy_all_files('PackagesBatch/*.unitypackage', './PackagesBatch/')
 
@@ -120,23 +113,6 @@ class SetupExecutor:
         if len(removed_dependencies) > 0:
             print('> Removed dependencies from project manifest')
             print('\n'.join(removed_dependencies))
-
-    def pull_nuget(self):
-        (new_content, packages) = merge_nuget_packages_config(
-            source_path=NUGET_PROJECT_PATH,
-            target_path=NUGET_SETUP_PATH,
-        )
-
-        write_unix(NUGET_SETUP_PATH, new_content)
-
-        new_json_content = update_omnisharp_json(OMNISHARP_SETUP_PATH, packages)
-        write_unix(OMNISHARP_SETUP_PATH, new_json_content)
-
-    def push_nuget(self):
-        self.__replace_config('omnisharp.json', '.')
-        self.__replace_config('NuGet.config', 'Assets')
-        self.__replace_config('packages.config', 'Assets')
-
 
     def __add_submodule(self, branch_name, git_url, folder_name):
         folder_path = os.path.join(SUBMODULES_FOLDER, folder_name)

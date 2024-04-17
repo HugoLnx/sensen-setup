@@ -1,6 +1,6 @@
 # Environment Setup
 ## Intro
-This document explain how to install your environment with intellisense omnisharp, analyzers, refactoring and code
+This document explain how to install your environment with intellisense, analyzers, refactoring and code
 styling review. Some things to know...
 * It's intended for VS Code.
 * The script overwrites a bunch of config files, so be careful. (although backups are created on `bkp/` folder)
@@ -12,8 +12,7 @@ styling review. Some things to know...
 ## Step-by-Step
 ### Warning
 * You need `git-bash` installed if you're on windows
-* This script will override the files: `Packages/manifest.json`, `.gitignore`, `.gitattributes`, `.editorconfig`,
-`omnisharp.json`, `Assets/NuGet.config`, and `Assets/packages.config`.
+* This script will override the files: `Packages/manifest.json`, `.gitignore`, `.gitattributes`, `.editorconfig`.
 
 ### Basic Setup
 1. Clone this repository to the root of your project.
@@ -88,18 +87,6 @@ Also, you can update only your project's `manifest.json` by running:
 $ python ./unity-sensen-setup/setup.py push-manifest
 ```
 
-### Updating nuget dependencies
-This project uses [https://github.com/GlitchEnzo/NuGetForUnity](NuGetForUnity) to handle the
-C# analyzers that will be integrated in VS Code. When you want to update those dependencies,
-just open the Nuget manager in Unity, update all dependencies, and then run the following command:
-```bash
-$ python ./unity-sensen-setup/setup.py pull-nuget
-$ python ./unity-sensen-setup/setup.py push-nuget
-```
-
-PS.: Everytime you update those dependencies you'll need to `pull` AND `push` them back. That's because
-push will also update `omnisharp.json` which has hardcoded references to the analyzers being used.
-
 ### .gitattributes
 Git attribute is configured to put large file like videos, audio, and 3d models into git LFS. Also
 it configures Unity YAML merging on the relevant file types through Unity's official merging tool.
@@ -128,9 +115,11 @@ dependencies._
 
 ## VS Code extra config
 ### Suggested Extensions
-- C# by Microsoft
 - C# Dev Kit by Microsoft
-- Unity by Microsoft
+    - C# by Microsoft
+    - Unity by Microsoft
+    - IntelliCode for C# Dev Kit
+- Editor Config
 - GitLens
 - Material Icon Theme
 - Unity Toolbox
@@ -168,17 +157,7 @@ dependencies._
 ```
 
 ## What's installed on the Package Manager...
-NuGet Packages
-- Microsoft.CodeAnalysis.CSharp
-- Microsoft.CodeAnalysis.CSharp.CodeStyle
-- Microsoft.CodeAnalysis.FxCopAnalyzers
-- Microsoft.Unity.Analyzers
-- Roslynator.Analyzers
-- Roslynator.Formatting.Analyzers
-- Roslynator.CodeAnalysis.Analyzers
-
 Unity Packages
-- NuGetForUnity
 - Cinemachine
 - Editor Coroutines
 - Unity Profiling Core API

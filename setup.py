@@ -10,8 +10,6 @@ COMMAND_INIT_SUBMODULES = 'init-submodules'
 COMMAND_RM_SUBMODULES = 'rm-submodules'
 COMMAND_PULL_MANIFEST = 'pull-manifest'
 COMMAND_PUSH_MANIFEST = 'push-manifest'
-COMMAND_PULL_NUGET = 'pull-nuget'
-COMMAND_PUSH_NUGET = 'push-nuget'
 COMMANDS = [
     COMMAND_INIT_GIT,
     COMMAND_SETUP_INIT,
@@ -20,8 +18,6 @@ COMMANDS = [
     COMMAND_RM_SUBMODULES,
     COMMAND_PULL_MANIFEST,
     COMMAND_PUSH_MANIFEST,
-    COMMAND_PULL_NUGET,
-    COMMAND_PUSH_NUGET,
 ]
 
 if __name__ != '__main__':
@@ -97,7 +93,3 @@ elif args.command == COMMAND_PULL_MANIFEST:
     e.pull_manifest()
 elif args.command == COMMAND_PUSH_MANIFEST:
     e.push_manifest()
-elif args.command == COMMAND_PULL_NUGET:
-    e.pull_nuget()
-elif args.command == COMMAND_PUSH_NUGET:
-    e.push_nuget()
