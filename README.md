@@ -116,13 +116,15 @@ gamejam projects. (eg. localization, analytics, testing, profilling tools, etc)
 _PS.: If you don't pass any options explicitly the script will try to guess based on the project's
 dependencies._
 
-## VS Code extra config
-### Suggested Extensions
+## VS Code config
+### Mandatory Extensions
 - C# Dev Kit by Microsoft
     - C# by Microsoft
     - IntelliCode for C# Dev Kit
 - Unity by Microsoft
 - Editor Config
+
+### Suggested Extensions
 - GitLens
 - Material Icon Theme
 - Unity Toolbox
