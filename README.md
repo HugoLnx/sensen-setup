@@ -128,9 +128,11 @@ dependencies._
 
 ## VS Code extra config
 ### Suggested Extensions
-- C# by Microsoft
 - C# Dev Kit by Microsoft
-- Unity by Microsoft
+    - C# by Microsoft
+    - Unity by Microsoft
+    - IntelliCode for C# Dev Kit
+- Editor Config
 - GitLens
 - Material Icon Theme
 - Unity Toolbox
