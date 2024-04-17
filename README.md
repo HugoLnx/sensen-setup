@@ -39,11 +39,14 @@ $ git commit -m "First commit: Through unity-sensen-setup init-git"
 
 4. Execute the initial setup
 ```bash
-$ python ./unity-sensen-setup/setup.py init
+$ python ./unity-sensen-setup/setup.py init --2d --mobile --minimal
 # This will:
 # - Import all configurations
 # - Initialize unity-sensen-toolkit submodule
 # - Create the ./PackagesBatch/ folder with DOTWeen inside
+# Valid Options:
+# --2d | --3d | --mobile | --desktop | --minimal
+# See more on manifest filtering section
 ```
 
 4. Open the project on Unity
@@ -106,6 +109,21 @@ For the merging to work you will need to configure the tool, see more on [https:
 2. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`
 3. Press "CTRL + R" (Refresh Assets)
 4. Move the files related to assets to `/Assets/Vendor` (this folder is in `.gitignore`)
+
+### Manifest filtering
+Depending on the project (2d, 3d, mobile, desktop) you'll probably need a different set of
+dependencies. For that reason, all commands that pushed the manifest can receive one of the
+following options:
+* `--2d`: Forces it to add 2D dependencies and exclude 3D-only dependencies
+* `--3d`: Forces it to add 3D dependencies and exclude 2D-only dependencies
+* `--mobile`: Forces it to add mobile-only dependencies
+* `--desktop`: Forces it to exclude mobile-only dependencies
+* `--slim`: Removes dependencies that usually won't be used in prototypes and
+gamejam projects. (eg. localization, analytics, testing, profilling tools, etc)
+
+
+_PS.: If you don't pass any options explicitly the script will try to guess based on the project's
+dependencies._
 
 ## VS Code extra config
 ### Suggested Extensions
