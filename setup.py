@@ -34,7 +34,7 @@ parser.add_argument('--2d', dest='two_d', default=False, help='Force to use 2D d
 parser.add_argument('--3d', dest='three_d', default=False, help='Force to use 3D dependencies', action='store_true', required=False)
 parser.add_argument('--mobile', default=False, help='Use mobile dependencies', action='store_true', required=False)
 parser.add_argument('--desktop', default=False, help='Use desktop dependencies', action='store_true', required=False)
-parser.add_argument('--minimal', default=False, help='Remove some optional dependencies', action='store_true', required=False)
+parser.add_argument('--slim', default=False, help='Remove some optional dependencies (good for prototypes and gamejams)', action='store_true', required=False)
 args = parser.parse_args()
 
 if args.two_d and args.three_d:
@@ -50,16 +50,16 @@ if args.mobile and args.desktop:
 is_2d = args.two_d or (not(args.three_d) and is_2d_manifest(MANIFEST_PROJECT_PATH))
 is_3d = not is_2d
 is_mobile = args.mobile or (not(args.desktop) and is_mobile_manifest(MANIFEST_PROJECT_PATH))
-is_minimal = args.minimal
+is_slim = args.slim
 
 was_auto_detected = not(args.two_d) and not(args.three_d)
-print(f'Using {'2D' if is_2d else '3D'}{' mobile' if is_mobile else ''}{' minimal' if is_minimal else ''} dependencies {'(Auto-detected)' if was_auto_detected else ''}')
+print(f'Using {'2D' if is_2d else '3D'}{' mobile' if is_mobile else ''}{' slim' if is_slim else ''} dependencies {'(Auto-detected)' if was_auto_detected else ''}')
 
 manifest_filters = {
     '2d': is_2d,
     '3d': is_3d,
     'mobile': is_mobile,
-    'minimal': is_minimal,
+    'slim': is_slim,
 }
 
 if args.command not in COMMANDS:

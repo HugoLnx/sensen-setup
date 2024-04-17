@@ -37,7 +37,7 @@ IDENTIFIER_MOBILE_DEPENDENCIES = DEPENDENCIES_MOBILE_ONLY.union(set([
     'com.unity.mobile.notifications',
 ]))
 
-REMOVE_ON_MINIMAL = set([
+REMOVE_ON_SLIM = set([
     'com.unity.feature.development',
     'com.unity.test-framework',
     'com.unity.memoryprofiler',
@@ -129,7 +129,7 @@ def is_mobile_manifest(manifest_path):
 def __dependencies_to_remove(filters = {}):
     is_2d = filters.get('2d', False)
     is_3d = filters.get('3d', False)
-    is_minimal = filters.get('minimal', False)
+    is_slim = filters.get('slim', False)
     is_mobile = filters.get('mobile', False)
     if not is_2d and not is_3d:
         is_3d = True
@@ -143,8 +143,8 @@ def __dependencies_to_remove(filters = {}):
     else:
         to_remove += DEPENDENCIES_2D_ONLY
 
-    if is_minimal:
-        to_remove += REMOVE_ON_MINIMAL
+    if is_slim:
+        to_remove += REMOVE_ON_SLIM
     if not is_mobile:
         to_remove += DEPENDENCIES_MOBILE_ONLY
 
