@@ -38,17 +38,19 @@ IDENTIFIER_MOBILE_DEPENDENCIES = DEPENDENCIES_MOBILE_ONLY.union(set([
 ]))
 
 REMOVE_ON_MINIMAL = set([
+    'com.unity.feature.development',
+    'com.unity.test-framework',
+    'com.unity.memoryprofiler',
+    'com.unity.recorder',
+    'com.unity.testtools.codecoverage',
+    'com.unity.performance.profile-analyzer',
     'com.unity.collections',
     'com.unity.localization',
-    'com.unity.recorder',
-    'com.unity.test-framework',
     'com.unity.services.analytics',
     'com.unity.timeline',
     'com.unity.visualscripting',
     'com.unity.collab-proxy',
-    'com.unity.ide.rider',
     'com.unity.addressables',
-    'com.unity.memoryprofiler',
 ])
 
 ALWAYS_REMOVE = [
