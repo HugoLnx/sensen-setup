@@ -49,13 +49,14 @@ $ python ./unity-sensen-setup/setup.py init --2d --mobile --minimal
 # See more on manifest filtering section
 ```
 
-4. Open the project on Unity
-5. Refresh Assets (Press "CTRL + R")
-6. At the topbar menu execute: `Tools > Sensen > Resolve Package Manager`
-7. Restart Unity
-8. Add the unity packages you want into `./PackagesBatch/` folder.
-9. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`. (You can also import manually if you want)
-10. Execute the full setup
+5. Open the project on Unity
+6. Refresh Assets (Press "CTRL + R")
+7. At the topbar menu execute: `Tools > Sensen > Resolve Package Manager`
+8. Restart Unity
+9. Add the unity packages you want into `./PackagesBatch/` folder.
+10. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`. (You can also import manually if you want)
+11. Execute the full setup
+12. (Optional) Open `Unity's Preferences` > Set Visual Studio Code as the External editor, and click in `Regenerate project files`. (Reference: [https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc](Docs Visual Studio Package))
 ```bash
 $ python ./unity-sensen-setup/setup.py all
 # This will:
