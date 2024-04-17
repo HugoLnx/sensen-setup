@@ -30,11 +30,11 @@ if __name__ != '__main__':
 parser = argparse.ArgumentParser()
 parser.add_argument('command', choices=COMMANDS, default=COMMANDS[0], help='Command to run', type=str)
 parser.add_argument('--name', default=None, help='Name of the game', type=str, required=False)
-parser.add_argument('--2d', dest='two_d', default=False, help='Force to use 2D dependencies', type=bool, required=False)
-parser.add_argument('--3d', dest='three_d', default=False, help='Force to use 3D dependencies', type=bool, required=False)
-parser.add_argument('--mobile', default=False, help='Use mobile dependencies', type=bool, required=False)
-parser.add_argument('--desktop', default=False, help='Use desktop dependencies', type=bool, required=False)
-parser.add_argument('--minimal', default=False, help='Remove some optional dependencies', type=bool, required=False)
+parser.add_argument('--2d', dest='two_d', default=False, help='Force to use 2D dependencies', action='store_true', required=False)
+parser.add_argument('--3d', dest='three_d', default=False, help='Force to use 3D dependencies', action='store_true', required=False)
+parser.add_argument('--mobile', default=False, help='Use mobile dependencies', action='store_true', required=False)
+parser.add_argument('--desktop', default=False, help='Use desktop dependencies', action='store_true', required=False)
+parser.add_argument('--minimal', default=False, help='Remove some optional dependencies', action='store_true', required=False)
 args = parser.parse_args()
 
 if args.two_d and args.three_d:

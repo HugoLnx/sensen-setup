@@ -66,7 +66,6 @@ def merge_manifests(target_path, source_path, add_new_dependencies=True, filters
     target_dependencies = target_json['dependencies']
     source_dependencies = source_json['dependencies']
     dependencies_to_remove = __dependencies_to_remove(filters)
-    print(f'Dependencies to remove: {dependencies_to_remove}')
 
     # update versions in target
     version_updates = []
