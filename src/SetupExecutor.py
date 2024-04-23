@@ -47,6 +47,8 @@ class SetupExecutor:
             shutil.copytree(os.path.join(SETUP_ROOT, 'Templates/ProjectStructure/'), project_structure_path)
         self.__ensure_folder('Assets/Vendor')
         self.__ensure_folder('Assets/Plugins/_Ignore')
+        scripts_folder = os.path.join(project_structure_path, 'Code', 'Scripts')
+        self.__ensure_assembly_definition_on(scripts_folder)
 
     def init_submodules(self, only_toolkit=False):
         os.makedirs(SUBMODULES_FOLDER, exist_ok=True)
@@ -160,6 +162,15 @@ class SetupExecutor:
         folder_path = os.path.join(PROJECT_ROOT, folder_relative_path)
         os.makedirs(folder_path, exist_ok=True)
         open(os.path.join(folder_path, '.gitkeep'), 'a').close()
+
+    def __ensure_assembly_definition_on(self, folder_path):
+        template_path = os.path.join(SETUP_ROOT, 'ConfigFiles', 'AssemblyDefinition.asmdef')
+        with open(template_path, 'r') as template_file:
+            template_content = template_file.read()
+        assembly_definition_content = template_content.replace('<PROJECT_NAME>', self.project_name) 
+
+        assembly_definition_path = os.path.join(folder_path, f"{self.project_name}.asmdef")
+        write_unix(assembly_definition_path, assembly_definition_content)
 
     def __backup_file_if_exists(self, filename, filefolder='.'):
         filepath = os.path.join(filefolder, filename)
