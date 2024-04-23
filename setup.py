@@ -8,12 +8,14 @@ COMMAND_INIT_CONFIGS = 'configs'
 COMMAND_INIT_STRUCTURE = 'structure'
 COMMAND_PULL_MANIFEST = 'pull-manifest'
 COMMAND_PUSH_MANIFEST = 'push-manifest'
+COMMAND_ADD_SUBMODULES = 'add-submodules'
 COMMANDS = [
     COMMAND_INIT_GIT,
     COMMAND_INIT_CONFIGS,
     COMMAND_INIT_STRUCTURE,
     COMMAND_PULL_MANIFEST,
     COMMAND_PUSH_MANIFEST,
+    COMMAND_ADD_SUBMODULES,
 ]
 
 if __name__ != '__main__':
@@ -79,3 +81,5 @@ elif args.command == COMMAND_PULL_MANIFEST:
     e.pull_manifest()
 elif args.command == COMMAND_PUSH_MANIFEST:
     e.push_manifest()
+elif args.command == COMMAND_ADD_SUBMODULES:
+    e.init_submodules()
