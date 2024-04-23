@@ -38,10 +38,13 @@ $ git commit -m "First commit: Through unity-sensen-setup git"
 
 4. Execute the initial setup
 ```bash
-$ python ./unity-sensen-setup/setup.py configs --2d --mobile --slim
+$ python ./unity-sensen-setup/setup.py project --2d --mobile --slim
 # This will:
 # - Import all configurations
-# - Initialize unity-sensen-toolkit submodule
+# - Initialize submodule:
+#   - unity-lnx-arch
+#   - unity-sensen-toolkit
+#   - unity-sensen-components
 # - Create the ./PackagesBatch/ folder with DOTWeen inside
 # Valid Options:
 # --2d | --3d | --mobile | --desktop | --slim
@@ -50,24 +53,12 @@ $ python ./unity-sensen-setup/setup.py configs --2d --mobile --slim
 
 5. Open the project on Unity
 6. Refresh Assets (Press "CTRL + R")
-7. At the topbar menu execute: `Tools > Sensen > Resolve Package Manager`
-8. Restart Unity
-9. Add the unity packages you want into `./PackagesBatch/` folder.
-10. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`. (You can also import manually if you want)
-11. Execute the full setup
-12. (Optional) Open `Unity's Preferences` > Set Visual Studio Code as the External editor, and click in `Regenerate project files`. (Reference: [Docs Visual Studio Package](https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc))
-```bash
-$ python ./unity-sensen-setup/setup.py structure
-# This will:
-# - Create project structure on Assets/{Project's folder name}
-# - Initialize all pre-defined submodules
-# Notes:
-# By default, it creates the structure using the same name of the Project's folder, but
-# you can specify a custom name using `--name "MyGame"`, this will create the structure
-# at `Assets/MyGame`.
-```
-11. Refresh Assets on Unity (Press "CTRL + R")
-12. Commit the setup final state
+7. Add the unity packages you want into `./PackagesBatch/` folder.
+8. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`. (You can also import manually if you want)
+9. Configure your script's assembly definition (`Assets/YOUR_GAME/Code/Scripts/YOUR_GAME.asmdef`)
+  This script will configure a default assembly definition with lots of dependencies, remove the ones you're not using.
+10. (Optional) Open `Unity's Preferences` > Set Visual Studio Code as the External editor, and click in `Regenerate project files`. (Reference: [Docs Visual Studio Package](https://marketplace.visualstudio.com/items?itemName=VisualStudioToolsForUnity.vstuc))
+11. Commit the setup final state
 ```bash
 $ git add .
 $ git commit -m "Complete setup through unity-sensen-setup"
@@ -99,7 +90,7 @@ For the merging to work you will need to configure the tool, see more on [Unity'
 1. Copy the desired `*.unitypackages` to `./PackagesBatch`
 2. At the topbar menu execute: `Tools > Sensen > Import Packages Batch`
 3. Press "CTRL + R" (Refresh Assets)
-4. Move the files related to assets to `/Assets/Vendor` (this folder is in `.gitignore`)
+4. Move the files related to assets to `/Assets/Plugins/` or `/Assets/Plugins/_Ignore/` (the latest is in `.gitignore`)
 
 ### Manifest filtering
 Depending on the project (2d, 3d, mobile, desktop) you'll probably need a different set of
