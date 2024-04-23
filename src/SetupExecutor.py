@@ -4,7 +4,7 @@ from datetime import datetime
 import shutil
 import subprocess
 from src.manifest import merge_manifests
-from src.utils import write_unix
+from src.utils import write_unix, to_unixpath
 
 SETUP_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 PROJECT_ROOT = os.path.abspath(os.path.join(SETUP_ROOT, '..'))
@@ -116,7 +116,7 @@ class SetupExecutor:
 
     def __add_submodule(self, branch_name, git_url, folder_name):
         folder_path = os.path.join(SUBMODULES_FOLDER, folder_name)
-        folder_relpath = os.path.relpath(folder_path, PROJECT_ROOT)
+        folder_relpath = to_unixpath(os.path.relpath(folder_path, PROJECT_ROOT))
         cmd = ['git', 'submodule', 'add', '-f', '-b', branch_name, '--', git_url, folder_relpath]
         subprocess.run(cmd, cwd=PROJECT_ROOT)
 

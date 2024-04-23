@@ -20,3 +20,6 @@ def is_version_higher_than(version1, version2):
 def write_unix(config_path, content):
     with open(config_path, 'w', newline='\n') as config_file:
         config_file.write(content)
+
+def to_unixpath(path):
+    return os.path.normpath(path).replace('\\', '/')
