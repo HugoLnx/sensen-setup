@@ -12,8 +12,6 @@ BKP_FOLDER = os.path.join(SETUP_ROOT, 'bkp')
 SUBMODULES_FOLDER = os.path.join(PROJECT_ROOT, 'Assets', 'Plugins', 'Submodules')
 DEFAULT_PROJECT_NAME = os.path.basename(PROJECT_ROOT)
 
-OMNISHARP_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'omnisharp.json')
-
 MANIFEST_PROJECT_PATH = os.path.join(PROJECT_ROOT, 'Packages', 'manifest.json')
 MANIFEST_SETUP_PATH = os.path.join(SETUP_ROOT, 'ConfigFiles', 'manifest.json')
 
@@ -50,12 +48,11 @@ class SetupExecutor:
         scripts_folder = os.path.join(project_structure_path, 'Code', 'Scripts')
         self.__ensure_assembly_definition_on(scripts_folder)
 
-    def init_submodules(self, only_toolkit=False):
+    def add_submodules(self, only_toolkit=False):
         os.makedirs(SUBMODULES_FOLDER, exist_ok=True)
         subprocess.run(['git', 'submodule', 'init'], cwd=PROJECT_ROOT)
-        if not only_toolkit:
-            self.__add_submodule('dev', 'https://github.com/HugoLnx/unity-lnx-arch.git', 'unity-lnx-arch')
-            self.__add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-components.git', 'unity-sensen-components')
+        self.__add_submodule('dev', 'https://github.com/HugoLnx/unity-lnx-arch.git', 'unity-lnx-arch')
+        self.__add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-components.git', 'unity-sensen-components')
         self.__add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-toolkit.git', 'unity-sensen-toolkit')
         subprocess.run(['git', 'submodule', 'update', '--recursive', '--remote'], cwd=PROJECT_ROOT)
 

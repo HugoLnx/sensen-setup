@@ -4,16 +4,14 @@ from src.SetupExecutor import SetupExecutor, MANIFEST_PROJECT_PATH
 from src.manifest import is_2d_manifest, is_mobile_manifest
 
 COMMAND_INIT_GIT = 'git'
-COMMAND_INIT_CONFIGS = 'configs'
-COMMAND_INIT_STRUCTURE = 'structure'
+COMMAND_INIT_PROJECT = 'project'
 COMMAND_PULL_MANIFEST = 'pull-manifest'
 COMMAND_PUSH_MANIFEST = 'push-manifest'
 COMMAND_ADD_SUBMODULES = 'add-submodules'
 COMMAND_DEL_SUBMODULES = 'del-submodules'
 COMMANDS = [
     COMMAND_INIT_GIT,
-    COMMAND_INIT_CONFIGS,
-    COMMAND_INIT_STRUCTURE,
+    COMMAND_INIT_PROJECT,
     COMMAND_PULL_MANIFEST,
     COMMAND_PUSH_MANIFEST,
     COMMAND_ADD_SUBMODULES,
@@ -48,8 +46,13 @@ is_3d = not is_2d
 is_mobile = args.mobile or (not(args.desktop) and is_mobile_manifest(MANIFEST_PROJECT_PATH))
 is_slim = args.slim
 
-was_auto_detected = not(args.two_d) and not(args.three_d)
-print(f'Using {'2D' if is_2d else '3D'}{' mobile' if is_mobile else ''}{' slim' if is_slim else ''} dependencies {'(Auto-detected)' if was_auto_detected else ''}')
+def print_project_filters():
+    dimension_auto_detected = not(args.two_d) and not(args.three_d)
+    platform_auto_detected = not(args.mobile) and not(args.desktop)
+    print('Project Setup Type:')
+    print('  > Dimension:', '2D' if is_2d else '3D', '(Auto-detected)' if dimension_auto_detected else '')
+    print('  > Platform:', 'Mobile' if is_mobile else 'Desktop', '(Auto-detected)' if platform_auto_detected else '')
+    print('  > Slim:', is_slim)
 
 manifest_filters = {
     '2d': is_2d,
@@ -71,19 +74,20 @@ e = SetupExecutor(
 if args.command == COMMAND_INIT_GIT:
     e.backup_config_files()
     e.init_git()
-elif args.command == COMMAND_INIT_CONFIGS:
+elif args.command == COMMAND_INIT_PROJECT:
+    print_project_filters()
     e.backup_config_files()
+    e.init_git()
     e.push_manifest()
     e.import_configs()
-    e.init_submodules(only_toolkit=True)
-elif args.command == COMMAND_INIT_STRUCTURE:
     e.create_project_structure()
-    e.init_submodules()
+    e.add_submodules()
 elif args.command == COMMAND_PULL_MANIFEST:
     e.pull_manifest()
 elif args.command == COMMAND_PUSH_MANIFEST:
+    print_project_filters()
     e.push_manifest()
 elif args.command == COMMAND_ADD_SUBMODULES:
-    e.init_submodules()
+    e.add_submodules()
 elif args.command == COMMAND_DEL_SUBMODULES:
     e.del_submodules()
