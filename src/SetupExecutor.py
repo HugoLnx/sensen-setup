@@ -57,6 +57,20 @@ class SetupExecutor:
         self.__add_submodule('dev', 'https://github.com/HugoLnx/unity-sensen-toolkit.git', 'unity-sensen-toolkit')
         subprocess.run(['git', 'submodule', 'update', '--recursive', '--remote'], cwd=PROJECT_ROOT)
 
+    def del_submodules(self, only_toolkit=False):
+        subprocess.run(['git', 'submodule', 'deinit', '--force', '--all'], cwd=PROJECT_ROOT)
+        self.__del_submodule('unity-lnx-arch')
+        self.__del_submodule('unity-sensen-components')
+        self.__del_submodule('unity-sensen-toolkit')
+
+        shutil.rmtree(SUBMODULES_FOLDER, ignore_errors=True)
+        print(f"Deleted folder {SUBMODULES_FOLDER}")
+
+        gitmodules_path = os.path.join(PROJECT_ROOT, '.gitmodules')
+        if os.path.exists(gitmodules_path):
+            os.remove(gitmodules_path)
+        print(f"Deleted file {gitmodules_path}")
+
     def cleanup_submodules(self):
         subprocess.run(['git', 'submodule', 'deinit', '-f', '.'], cwd=PROJECT_ROOT)
         shutil.rmtree(SUBMODULES_FOLDER, ignore_errors=True)
@@ -118,6 +132,12 @@ class SetupExecutor:
         folder_path = os.path.join(SUBMODULES_FOLDER, folder_name)
         folder_relpath = to_unixpath(os.path.relpath(folder_path, PROJECT_ROOT))
         cmd = ['git', 'submodule', 'add', '-f', '-b', branch_name, '--', git_url, folder_relpath]
+        subprocess.run(cmd, cwd=PROJECT_ROOT)
+
+    def __del_submodule(self, folder_name):
+        folder_path = os.path.join(SUBMODULES_FOLDER, folder_name)
+        folder_relpath = to_unixpath(os.path.relpath(folder_path, PROJECT_ROOT))
+        cmd = ['git', 'rm', '-f', folder_relpath]
         subprocess.run(cmd, cwd=PROJECT_ROOT)
 
     def __replace_config(self, config_relative_path, target_relative_path):
