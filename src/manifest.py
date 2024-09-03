@@ -38,6 +38,7 @@ IDENTIFIER_MOBILE_DEPENDENCIES = DEPENDENCIES_MOBILE_ONLY.union(set([
 ]))
 
 REMOVE_ON_SLIM = set([
+    'com.rlabrecque.steamworks.net',
     'com.unity.feature.development',
     'com.unity.test-framework',
     'com.unity.memoryprofiler',
