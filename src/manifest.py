@@ -3,6 +3,10 @@ import os
 import re
 from .utils import is_version_higher_than, write_unix
 
+DEPENDENCIES_DESKTOP_ONLY = set([
+    'com.rlabrecque.steamworks.net',
+])
+
 DEPENDENCIES_2D_ONLY = set([
     'com.unity.feature.2d',
     'com.unity.cinemachine',
@@ -146,7 +150,9 @@ def __dependencies_to_remove(filters = {}):
 
     if is_slim:
         to_remove += REMOVE_ON_SLIM
-    if not is_mobile:
+    if is_mobile:
+        to_remove += DEPENDENCIES_DESKTOP_ONLY
+    else:
         to_remove += DEPENDENCIES_MOBILE_ONLY
 
     to_remove += ALWAYS_REMOVE
