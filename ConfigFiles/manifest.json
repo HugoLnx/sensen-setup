@@ -2,7 +2,7 @@
   "dependencies": {
     "com.madsbangh.easybuttons": "https://github.com/madsbangh/EasyButtons.git#upm",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-    "com.domybest.mybox": "https://github.com/hugolnx/MyBox.git#lnxmod",
+    "com.domybest.mybox": "https://github.com/hugolnx/MyBox.git#mymod",
     "com.rlabrecque.steamworks.net": "https://github.com/rlabrecque/Steamworks.NET.git?path=/com.rlabrecque.steamworks.net#2024.8.0",
 
     "com.unity.ai.navigation": "2.0.4",
